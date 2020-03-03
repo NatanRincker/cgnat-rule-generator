@@ -1,0 +1,36 @@
+#rule-form-container{
+    background-color: rgb(71, 79, 83);
+    
+    border-radius: 2%;
+    padding: 10px;
+    min-height: 300px;
+    margin-top: 5%;
+}
+
+.bg-rule-modal{
+    background: rgb(71, 79, 83);
+}
+
+.form-row .col-sm-6{
+    padding-left: 0% !important;
+}
+
+.rule-form{
+    margin-bottom: 15px;
+    text-align: left;
+    padding-left: 0%;
+}
+
+.center-label{
+    text-align: center;
+}
+
+textarea{
+    min-width: 100%;
+    min-height: 600px;
+    color: #0de4c0 !important;
+    text-align: left;
+    font-size: 15px;
+}
+
+ 

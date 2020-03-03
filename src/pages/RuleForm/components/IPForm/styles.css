@@ -1,0 +1,23 @@
+.ip-form{
+    margin-bottom: 15px;
+    text-align: left;
+    padding-left: 0%;
+}
+
+
+.col-sm-2{
+    padding-left: 0% !important;
+}
+.ip-input{
+    max-width:200px;
+    text-align: center;
+    margin-right: 10px;
+}
+
+.range-select{
+    width: 10%;
+    min-width: 50px;
+    border-top-right-radius: 8%;
+    border-bottom-right-radius: 8%;
+    text-align-last: center;
+}
