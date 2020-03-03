@@ -15,7 +15,7 @@ export default class CGNATRule{
     inBuildindgRulePrivateIP;
     inBuildindgRulePublicIP;
 
-    rangesUsedAsChains=[24,26,27,29,32]
+    rangesUsedAsChains=[24,26,27,29]
     constructor(privateStartIP, publicStartIP, destination, numeration=null, addresList=null){
         this.privateStartIP = privateStartIP
         this.publicStartIP = publicStartIP
@@ -33,12 +33,11 @@ export default class CGNATRule{
     }
     appendChain(range, isStart=false, targetedChainIndex=''){
         let rule;
-        if(this.hasSubChains(range)){
+        if(this.isSubChain(range)){
             let chainComment = isStart? `comment="Inicio CGNAT"` : ``;
             let chainRule='';
             let subRange = this.getSubRange(range)
             let parallelChainsAmount = this.getParallelChainsAmountOf(range)
-            console.log('range'+range+ ' parallelChainsAmount'+parallelChainsAmount)
             for(let chainIndex=1; chainIndex<=parallelChainsAmount; chainIndex++){
                 let jumpTarget = targetedChainIndex+`-${chainIndex}`;
                 let chain = new ChainRule(
@@ -59,7 +58,7 @@ export default class CGNATRule{
         return rule
     }
     appendIpRule(chainIndex){
-        let innerChainRule;
+        let innerChainRule='';
         console.log('/29')
         for(let i=1; i<=IPV4Utils.getIPAmountOnRange(29);i++){
             let ipRule = new IPRule(
@@ -72,18 +71,18 @@ export default class CGNATRule{
             ipRule.buildRule()
             
             this.inBuildindgRulePublicIP.occupyPorts(this.portsPerIP)
-            console.log('pubIP ports: '+this.inBuildindgRulePublicIP.occupiedPorts)
             if(this.inBuildindgRulePublicIP.allPortsAreOccupied()){
                 this.inBuildindgRulePublicIP.increment()
             }
             this.inBuildindgRulePrivateIP.increment()
+            console.log(ipRule.rule)
             innerChainRule+= ipRule.rule
         }
         return innerChainRule
     }
 
-    hasSubChains(range){
-        return this.rangesUsedAsChains.some(chainRange => chainRange>range)
+    isSubChain(range){
+        return this.rangesUsedAsChains.some(chainRange => chainRange===range)
     }
     getSubRange(range){
         return this.rangesUsedAsChains.find(chainRange => chainRange>range)
