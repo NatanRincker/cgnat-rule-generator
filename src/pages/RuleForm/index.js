@@ -12,9 +12,9 @@ function RuleForm() {
         {label:'1 to 16', iPAmount:16},
         {label:'1 to 32', iPAmount:32},
     ]
-    const numeration=[1,2,3,4,5,6,7,8,9]
-    const [privateIP, setPrivateIP]=useState('')
-    const [publicIP, setPublicIP]=useState('')
+    const numeration=[1,2,3,4,5,6,7,8,9]  
+    const [privateIP, setPrivateIP]=useState()
+    const [publicIP, setPublicIP]=useState()       
     const [destination, setDestination]=useState(DESTINATION_OPTIONS[0].label)
     const [ruleNumber, setRuleNumber]=useState(numeration[0])
     const [addresList, setAddresList]=useState('')
@@ -120,14 +120,12 @@ function RuleForm() {
     
     function callbackPrivateIPFromIPForm(IP){
         setPrivateIP(IP)
-        console.log(IP)
     }
     function callbackPublicIPFromIPForm (IP){
         setPublicIP(IP)
-        console.log(IP)
     }
-
-    function generateRule(){
+    async function generateRule(){
+        console.log({"antes": privateIP, publicIP})
         let cgnatRule = new CGNATRule(
             privateIP,
             publicIP,
@@ -135,10 +133,12 @@ function RuleForm() {
             ruleNumber,
             addresList
         )
-        console.log(cgnatRule)
-        cgnatRule.buildRule()
+        
+        console.log({"depois": privateIP, publicIP})
+        await cgnatRule.buildRule()
         setGeneratedRule(cgnatRule.rule)
         setShowModal(true)
+
     }
     function copyTextAreaContent(){
         let ruleTextArea = document.getElementById("rule-textarea");

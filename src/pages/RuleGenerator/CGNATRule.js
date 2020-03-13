@@ -17,19 +17,22 @@ export default class CGNATRule{
 
     rangesUsedAsChains=[24,26,27,29]
     constructor(privateStartIP, publicStartIP, destination, numeration=null, addresList=null){
-        this.privateStartIP = privateStartIP
-        this.publicStartIP = publicStartIP
+        this.privateStartIP = new IPV4Adress(privateStartIP.addres, privateStartIP.range)
+        this.publicStartIP = new IPV4Adress(publicStartIP.addres, publicStartIP.range)
         this.destination = destination
         this.portsPerIP = this.calcPortsPerIP()
         this.numeration = numeration
         this.addresList = addresList
 
-        this.inBuildindgRulePrivateIP = this.privateStartIP
-        this.inBuildindgRulePublicIP = this.publicStartIP
+        this.inBuildindgRulePrivateIP = new IPV4Adress(this.privateStartIP.addres, this.privateStartIP.range)
+        this.inBuildindgRulePublicIP = new IPV4Adress(this.publicStartIP.addres, this.publicStartIP.range)
     }
 
     buildRule(){
         this.rule = `/ip firewall nat \n `+this.appendChain(this.privateStartIP.range, true)
+        
+        console.log(this.privateStartIP)
+
     }
     appendChain(range, isStart=false, targetedChainIndex=''){
         let rule;
@@ -75,7 +78,6 @@ export default class CGNATRule{
                 this.inBuildindgRulePublicIP.increment()
             }
             this.inBuildindgRulePrivateIP.increment()
-            console.log(ipRule.rule)
             innerChainRule+= ipRule.rule
         }
         return innerChainRule

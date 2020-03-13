@@ -1,7 +1,6 @@
 import React, {useEffect, useState} from 'react';
 
 import regEx from '../../../../tools/RegEx'
-import IPV4Addres from '../../../RuleGenerator/IPV4Adress'
 
 import './styles.css'
 import '../../../../global.css'
@@ -22,7 +21,6 @@ function IPForm({title, id, parentCallback}){
     const [validateInput=true, setValidateInput]=useState('')
 
     function sendToParent(){
-
         if(regEx.IPV4_ADDRESS.test(IPInputValue)){
             let IPAddres = new IPV4Adress(IPInputValue, selectedRange)
             parentCallback(IPAddres)
