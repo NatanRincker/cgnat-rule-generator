@@ -3,6 +3,7 @@ import Modal from 'react-bootstrap/Modal'
 import './styles.css'
 import '../../global.css'
 import IpForm from './components/IPForm'
+import CustomCheckBox from './components/CustomCheckBox'
 
 import CGNATRule from './../RuleGenerator/CGNATRule'
 
@@ -23,63 +24,72 @@ function RuleForm() {
     const [generatedRule, setGeneratedRule] = useState('')
     return(
         <div className='row d-flex justify-content-center'>
-            <div id='rule-form-container' className='col-xl-4 col-lg-6 col-md-6 col-sm-8 col-xs-6 shadow-lg p-3 mb-5'>
+            <div id='rule-form-container' className='col-xl-4 col-lg-6col-lg-6 col-md-6 col-sm-8 col-xs-6 shadow-lg p-3 mb-5'>
+                
                 <form>
-                    <IpForm id='privateIP' title='Private IP' parentCallback={callbackPrivateIPFromIPForm}/>
-                    <IpForm id='publicIP' title='Public IP' parentCallback={callbackPublicIPFromIPForm}/>
+                    <div className='input-group'>
+                        <IpForm id='privateIP' title='Private IP' parentCallback={callbackPrivateIPFromIPForm}/>
+                        <IpForm id='publicIP' title='Public IP' parentCallback={callbackPublicIPFromIPForm}/>
 
-                    <div className='input-group rule-form'>
-                        <label htmlFor="destination-select" className="text-white col-sm-2 col-form-label col-form-label-sm">Destination</label>    
-                        <div className='input-block'>
-                            <select 
-                            id='destination-select'
-                            value={destination}
-                            onChange={event => setDestination(event.target.value)}
-                            className="local-select form-control col-form-label col-form-label-sm  bg-secondary text-white border border-success">
-                                    {DESTINATION_OPTIONS.map(destination =>(
-                                        <option key={destination.label} value={destination.label}>{destination.label}</option>
-                                    ))}
-                            </select>     
-                        </div>
-                        <label htmlFor="enum-select" className="text-white col-sm-2 col-form-label col-form-label-sm center-label">Nº</label>    
-                        <div className='input-block'>
-                        <select 
-                        id='enum-select' 
-                        value={ruleNumber}
-                        onChange={event => setRuleNumber(event.target.value)}
-                        className="local-select form-control bg-secondary text-white border border-success">
-                                {numeration.map(num =>(
-                                    <option key={num} value={num}>{num}</option>
-                                ))}
-                        </select>   
-                        </div>
-                    </div>
-
-                    <div className='input-group rule-form'>
-                        <label htmlFor="destination-select" className="text-white col-sm-2 col-form-label col-form-label-sm">Adress List</label>    
-                        <div className="input-group col-sm-6  nopadding col-form-label-sm mb-2">    
-                            <div className="input-group-prepend bg-dark">
-                                <div className="input-group-text bg-dark border border-success">
-                                    <input 
-                                    type="checkbox" 
-                                    onChange={event => {
-                                        setDisableAddresListInput((event.target.checked)? '':'disabled')
-                                        if(!event.target.checked){
-                                            setAddresList('')
-                                        }
-                                    }}
-                                    aria-label="Checkbox for following text input"/>
-                                </div>
+                        <div className='input-group rule-form'>
+                            <label htmlFor="destination-select" className="text-white col-sm-2 col-form-label col-form-label-sm">Destination</label>    
+                            <div className='input-block'>
+                                <select 
+                                id='destination-select'
+                                value={destination}
+                                onChange={event => setDestination(event.target.value)}
+                                className="local-select form-control col-form-label col-form-label-sm  bg-secondary text-white border border-success">
+                                        {DESTINATION_OPTIONS.map(destination =>(
+                                            <option key={destination.label} value={destination.label}>{destination.label}</option>
+                                        ))}
+                                </select>     
                             </div>
-                            <input type="text"
-                            value={addresList}
-                            onChange={event => setAddresList(event.target.value)}
-                            disabled={disableAddresListInput}
-                            className="form-control form-control col-sm-8 col-xl-6 bg-secondary text-white border border-success"
-                            />
+                            <label htmlFor="enum-select" className="text-white col-sm-2 col-form-label col-form-label-sm center-label">Nº</label>    
+                            <div className='input-block'>
+                            <select 
+                            id='enum-select' 
+                            value={ruleNumber}
+                            onChange={event => setRuleNumber(event.target.value)}
+                            className="local-select form-control bg-secondary text-white border border-success">
+                                    {numeration.map(num =>(
+                                        <option key={num} value={num}>{num}</option>
+                                    ))}
+                            </select>   
+                            </div>
+                        </div>
+
+                        <div className='input-group rule-form'>
+                            <label htmlFor="destination-select" className="text-white col-sm-2 col-form-label col-form-label-sm">Adress List</label>    
+                            <div className="input-group col-sm-6  nopadding col-form-label-sm mb-2">    
+                                <div className="input-group-prepend bg-dark">
+                                    <div className="input-group-text bg-dark border border-success">
+                                        <input 
+                                        type="checkbox" 
+                                        onChange={event => {
+                                            setDisableAddresListInput((event.target.checked)? '':'disabled')
+                                            if(!event.target.checked){
+                                                setAddresList('')
+                                            }
+                                        }}
+                                        aria-label="Checkbox for following text input"/>
+                                    </div>
+                                </div>
+                                <input type="text"
+                                value={addresList}
+                                onChange={event => setAddresList(event.target.value)}
+                                disabled={disableAddresListInput}
+                                className="form-control col-sm-8 col-xl-6 bg-secondary text-white border border-success"
+                                />
+                            </div>
+                        </div>
+
+                        <div className='input-group rule-form'>     
+                            <CustomCheckBox label='TCP'></CustomCheckBox>
+                            <CustomCheckBox label='UDP'></CustomCheckBox>
+                            <CustomCheckBox label='ICMP'></CustomCheckBox>
                         </div>
                     </div>
-                    
+
                     <button type="button" onClick={generateRule} className="btn btn-dark btn-outline-success btn-lg btn-block">Generate Rule</button>
                     <Modal
                         show={showModal}
@@ -97,23 +107,28 @@ function RuleForm() {
                         </Modal.Title>
                         </Modal.Header>
                         <Modal.Body className='bg-rule-modal'>
-                            <textarea id='rule-textarea' 
-                            onChange={event => setGeneratedRule(event.target.value)}
-                            value={generatedRule}
-                            className='form-control bg-dark border border-success'></textarea>
+                            <textarea 
+                                id='rule-textarea' 
+                                onChange={event => setGeneratedRule(event.target.value)}
+                                value={generatedRule}
+                                className='form-control bg-dark border border-success'>
+                            </textarea>
                         </Modal.Body>
                         <Modal.Footer className='bg-rule-modal'>
                             <button 
-                            type="button" 
-                            className="btn btn-secondary" 
-                            onClick={() => setShowModal(false)}>Close</button>
+                                type="button" 
+                                className="btn btn-secondary" 
+                                onClick={() => setShowModal(false)}>Close
+                            </button>
                             <button 
-                            type="button" 
-                            className="btn btn-success"
-                            onClick={copyTextAreaContent}>Copy</button>
+                                type="button" 
+                                className="btn btn-success"
+                                onClick={copyTextAreaContent}>Copy
+                            </button>
                         </Modal.Footer>
                     </Modal>
                 </form>
+                
             </div>
         </div>
     )

@@ -25,7 +25,8 @@ export default class IPRule{
 
     buildRule(){
         this.protocols.forEach(protocol =>{
-            this.rule += `\t\tadd action="${this.action}" chain=${this.key} comment="${this.comment}" protocol="${protocol}" src-address="${this.srcAddres}"${this.atributeDstAddressList} to-address="${this.toAddress}" to-ports="${this.toPorts}"\n`    
+            let inStringToPorts = (protocol==='icmp')? '':` to-ports="${this.toPorts}`
+            this.rule += `\t\tadd action="${this.action}" chain="cgnat${this.key}" comment="${this.comment}" protocol="${protocol}" src-address="${this.srcAddres}"${this.atributeDstAddressList} to-address="${this.toAddress}"${inStringToPorts}"\n`    
         })
     }
 }

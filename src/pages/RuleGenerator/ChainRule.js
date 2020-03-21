@@ -13,6 +13,7 @@ export default class ChainRule{
     }
 
     buildRule(){
+        this.key = (this.key === `srcnat`)? this.key:`"cgnat${this.key}"`
         this.rule = `add action="${this.action}" chain=${this.key} ${this.comment} jump-target="cgnat${this.jumpTarget}" src-address="${this.srcAddress}" \n`
     }
 }
