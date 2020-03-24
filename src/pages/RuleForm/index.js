@@ -13,11 +13,17 @@ function RuleForm() {
         {label:'1 to 16', iPAmount:16},
         {label:'1 to 32', iPAmount:32},
     ]
-    const numeration=[1,2,3,4,5,6,7,8,9]  
+    let numeration=()=>{
+        let num=[]
+        for(let i=1;i<=50;i++){
+            num.push(i);
+        }
+        return num
+    }
     const [privateIP, setPrivateIP]=useState()
     const [publicIP, setPublicIP]=useState()       
     const [destination, setDestination]=useState(DESTINATION_OPTIONS[0].label)
-    const [ruleNumber, setRuleNumber]=useState(numeration[0])
+    const [ruleNumber, setRuleNumber]=useState(numeration()[0])
     const [addresList, setAddresList]=useState('')
     const [disableAddresListInput, setDisableAddresListInput]=useState('disabled')
     const [showModal, setShowModal] = useState(false)
@@ -51,7 +57,7 @@ function RuleForm() {
                             value={ruleNumber}
                             onChange={event => setRuleNumber(event.target.value)}
                             className="local-select form-control bg-secondary text-white border border-success">
-                                    {numeration.map(num =>(
+                                    {numeration().map(num =>(
                                         <option key={num} value={num}>{num}</option>
                                     ))}
                             </select>   
