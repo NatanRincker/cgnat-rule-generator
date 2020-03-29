@@ -31,5 +31,7 @@ textarea{
     color: #0de4c0 !important;
     text-align: left;
     font-size: 15px;
+    white-space: nowrap;
+    overflow: scroll !important;
 }
  

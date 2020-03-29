@@ -5,7 +5,8 @@ import IPRule from './IPRule';
 import ArrayUtils from './../../tools/ArrayUtils'
 
 export default class CGNATRule{
-    static standartChains=[16, 18, 20, 24, 26, 27, 29]
+    static standartChains=[16, 18, 20, 22, 24, 26, 27, 29]
+    static standartProtocols=['tcp', 'udp', 'icmp']
     // public atrib.
     privateStartIP;
     publicStartIP;
@@ -13,11 +14,12 @@ export default class CGNATRule{
     numeration;
     addresList;
     rule;
+    usedProtocols;
     // private atrib.
     inBuildindgRulePrivateIP;
     inBuildindgRulePublicIP;
-    rangesUsedAsChains
-    constructor(privateStartIP, publicStartIP, destination, numeration=null, addresList=null){
+    rangesUsedAsChains;
+    constructor(privateStartIP, publicStartIP, destination, numeration=null, addresList=null, usedProtocols=null){
         this.privateStartIP = new IPV4Adress(privateStartIP.addres, privateStartIP.range)
         this.publicStartIP = new IPV4Adress(publicStartIP.addres, publicStartIP.range)
         this.destination = destination
@@ -30,13 +32,14 @@ export default class CGNATRule{
 
         this.rangesUsedAsChains = CGNATRule.standartChains.filter(chain => chain>this.privateStartIP.range)
         this.rangesUsedAsChains.unshift(this.privateStartIP.range)
-        console.log('rangesUsedAsChains'+this.rangesUsedAsChains)
+
+        this.usedProtocols = (usedProtocols===null)? 
+        CGNATRule.standartProtocols : usedProtocols.map(protocol => protocol.toLowerCase())
+        console.log(this.usedProtocols)
     }
 
     buildRule(){
         this.rule = `/ip firewall nat \n `+this.appendChain(this.privateStartIP.range, true)
-        
-
     }
     appendChain(range, isStart=false, targetedChainIndex=''){
         let rule;
@@ -49,7 +52,6 @@ export default class CGNATRule{
             let chainRule='';
             let subRange = this.getSubRange(range)
             let parallelChainsAmount = this.getParallelChainsAmount(range)
-            console.log("rangesUsedAsChains"+this.rangesUsedAsChains)
             for(let chainIndex=1; chainIndex<=parallelChainsAmount; chainIndex++){
                 if(isStart){
                     chainKey = `srcnat`;
@@ -80,7 +82,8 @@ export default class CGNATRule{
                 this.inBuildindgRulePrivateIP.addres,
                 this.addresList,
                 this.inBuildindgRulePublicIP.addres,
-                this.inBuildindgRulePublicIP.getNextGapOfFreePorts(this.portsPerIP)
+                this.inBuildindgRulePublicIP.getNextGapOfFreePorts(this.portsPerIP),
+                this.usedProtocols
             )
             ipRule.buildRule()
             
@@ -104,7 +107,6 @@ export default class CGNATRule{
         if(this.rangesUsedAsChains[0]!==range){
             let revertedRangesUsedAsChains = ArrayUtils.invert(this.rangesUsedAsChains);
             let superRangeIndex = revertedRangesUsedAsChains.findIndex(chainRange => chainRange<range)
-            console.log( '/'+revertedRangesUsedAsChains[superRangeIndex]+' = '+Math.pow(2,range-revertedRangesUsedAsChains[superRangeIndex]) +'grupo de /'+range)
             return Math.pow(2,range-revertedRangesUsedAsChains[superRangeIndex])
         }else{
             return 1

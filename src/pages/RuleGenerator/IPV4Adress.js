@@ -21,7 +21,6 @@ export default class IPV4Adress{
     }
 
     getNextGapOfFreePorts(portAmount){
-        console.log('portAmount'+portAmount)
         let gapStart = (this.areTherePortsAvailableFor(1))? this.occupiedPorts+1:0;
         let gapEnd=0;
         if(gapStart!==0){

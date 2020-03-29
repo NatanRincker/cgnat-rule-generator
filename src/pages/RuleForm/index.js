@@ -28,6 +28,11 @@ function RuleForm() {
     const [disableAddresListInput, setDisableAddresListInput]=useState('disabled')
     const [showModal, setShowModal] = useState(false)
     const [generatedRule, setGeneratedRule] = useState('')
+    const [protocolsCheckBox, setProtocolsCheckBox] = useState(
+        CGNATRule.standartProtocols.map(p =>{
+            return {protocol:p.toUpperCase(), use:'true'}
+        })
+    )
     return(
         <div className='row d-flex justify-content-center'>
             <div id='rule-form-container' className='col-xl-4 col-lg-6col-lg-6 col-md-6 col-sm-8 col-xs-6 shadow-lg p-3 mb-5'>
@@ -89,10 +94,17 @@ function RuleForm() {
                             </div>
                         </div>
 
-                        <div className='input-group rule-form'>     
-                            <CustomCheckBox label='TCP'></CustomCheckBox>
-                            <CustomCheckBox label='UDP'></CustomCheckBox>
-                            <CustomCheckBox label='ICMP'></CustomCheckBox>
+                        <div className='input-group rule-form'>
+                            {protocolsCheckBox.map(protocolInfo =>{
+                                return(
+                                    <CustomCheckBox
+                                        key={protocolInfo.protocol}
+                                        label={protocolInfo.protocol} 
+                                        checked={protocolInfo.use} 
+                                        parentCallback={changeCheck}>
+                                    </CustomCheckBox>
+                                )
+                            })}  
                         </div>
                     </div>
 
@@ -146,27 +158,44 @@ function RuleForm() {
         setPublicIP(IP)
     }
     async function generateRule(){
-        console.log({"antes": privateIP, publicIP})
         let cgnatRule = new CGNATRule(
             privateIP,
             publicIP,
             DESTINATION_OPTIONS.find(destinationOption => destination === destinationOption.label),
             ruleNumber,
-            addresList
+            addresList,
+            getUsedProtocols(),
         )
-        
-        console.log({"depois": privateIP, publicIP})
         await cgnatRule.buildRule()
         setGeneratedRule(cgnatRule.rule)
         setShowModal(true)
-
     }
+
+    function changeCheck(protocolUsability){
+        let protocolList = protocolsCheckBox.map(p => {
+            if(p.protocol===protocolUsability.protocol){
+                return protocolUsability
+            }
+            return p
+        })
+        setProtocolsCheckBox(protocolList)
+    }
+             
+
     function copyTextAreaContent(){
         let ruleTextArea = document.getElementById("rule-textarea");
         ruleTextArea .select();
         console.log(generatedRule)
         ruleTextArea.setSelectionRange(0, generatedRule.length)
         document.execCommand("copy");
+    }
+
+    function getUsedProtocols(){
+        return protocolsCheckBox.filter(p => {
+            if(p.use==='true'){
+                return p
+            }   
+        }).map(p=>p.protocol)
     }
 
 }
