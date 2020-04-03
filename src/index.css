@@ -1,5 +1,5 @@
 html{
-  background-color: #282c34;
+  height: 100%;
 }
 
 body {
@@ -9,9 +9,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-
+  height: 100%;
+  background-color: #282c34;
 }
-
+#root{
+  height: 100%;
+}
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;

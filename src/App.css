@@ -1,19 +1,25 @@
 .App {
   text-align: center;
   background-color: #282c34;
-  overflow: hidden;
+  color:white;
+  overflow-x: hidden;
+  overflow-y: auto;
+  height: 100%;
+  
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+}
+
+.App .column-item{
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
 }
 
 
 .App-link {
   color: #61dafb;
-}
-
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
 }

@@ -1,0 +1,31 @@
+#footer-container{
+    width: 100%;
+    max-height: 200px;
+    min-height: 200px;
+    background-color: #3a3d44;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+}
+#footer-container .item{
+    display: flex;
+    flex-direction: column;
+    padding: 10px;
+    align-content: center;
+    justify-content: center;
+    
+}
+#footer-container .item a img{
+    max-height: 100px;
+    padding-left: 30px;
+}
+#footer-container .item a .media{
+    max-height: 50px;
+    padding-left: 10px;
+}
+ 
+.credits{
+    background-color: #32343a;
+    color: #666a75;
+    min-height: 20%;
+}
