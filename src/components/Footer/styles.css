@@ -1,5 +1,6 @@
 #footer-container{
     width: 100%;
+    padding-left: 30px;
     max-height: 200px;
     min-height: 200px;
     background-color: #3a3d44;
@@ -13,19 +14,38 @@
     padding: 10px;
     align-content: center;
     justify-content: center;
-    
+    position: relative;
 }
 #footer-container .item a img{
-    max-height: 100px;
-    padding-left: 30px;
+    max-height: 90px;
 }
 #footer-container .item a .media{
-    max-height: 50px;
+    max-height: 45px;
     padding-left: 10px;
 }
- 
-.credits{
-    background-color: #32343a;
-    color: #666a75;
-    min-height: 20%;
+#footer-container .item a .about{
+    max-height: 35px;
+}
+.main-img{
+    position: absolute;
+    opacity: 1;
+    transition: opacity 0.2s ease-out;
+}
+.main-img:hover{
+    opacity: 0;
+}
+
+#footer-container ul{
+    list-style-type: none;
+}
+.gray-title{
+    color: rgb(146, 146, 146);
+}
+.pos-left{
+    margin-right: 30px;
+    align-content: left !important;
+    justify-content: left !important;
+    justify-items: left !important;
+    align-items: left !important;
+    text-align: left;
 }

@@ -35,7 +35,6 @@ export default class CGNATRule{
 
         this.usedProtocols = (usedProtocols===null)? 
         CGNATRule.standartProtocols : usedProtocols.map(protocol => protocol.toLowerCase())
-        console.log(this.usedProtocols)
     }
 
     buildRule(){

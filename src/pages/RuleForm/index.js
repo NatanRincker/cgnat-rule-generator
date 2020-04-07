@@ -6,6 +6,7 @@ import IpForm from './components/IPForm'
 import CustomCheckBox from './components/CustomCheckBox'
 
 import CGNATRule from './../RuleGenerator/CGNATRule'
+import IPV4Utils from '../RuleGenerator/IPV4Utils';
 
 function RuleForm() {
     const DESTINATION_OPTIONS=[
@@ -21,7 +22,7 @@ function RuleForm() {
         return num
     }
     const [privateIP, setPrivateIP]=useState()
-    const [publicIP, setPublicIP]=useState()       
+    const [publicIP, setPublicIP]=useState()
     const [destination, setDestination]=useState(DESTINATION_OPTIONS[0].label)
     const [ruleNumber, setRuleNumber]=useState(numeration()[0])
     const [addresList, setAddresList]=useState('')
@@ -158,17 +159,26 @@ function RuleForm() {
         setPublicIP(IP)
     }
     async function generateRule(){
-        let cgnatRule = new CGNATRule(
-            privateIP,
-            publicIP,
-            DESTINATION_OPTIONS.find(destinationOption => destination === destinationOption.label),
-            ruleNumber,
-            addresList,
-            getUsedProtocols(),
-        )
-        await cgnatRule.buildRule()
-        setGeneratedRule(cgnatRule.rule)
-        setShowModal(true)
+        if(isFormFilled()){
+            let cgnatRule = new CGNATRule(
+                privateIP,
+                publicIP,
+                DESTINATION_OPTIONS.find(destinationOption => destination === destinationOption.label),
+                ruleNumber,
+                addresList,
+                getUsedProtocols(),
+            )
+            await cgnatRule.buildRule()
+            setGeneratedRule(cgnatRule.rule)
+            setShowModal(true)
+        }
+        
+    }
+    function isFormFilled(){
+        return isIpFormOK()
+    }
+    function isIpFormOK(){
+        return privateIP!==undefined && publicIP!==undefined
     }
 
     function changeCheck(protocolUsability){
@@ -185,7 +195,6 @@ function RuleForm() {
     function copyTextAreaContent(){
         let ruleTextArea = document.getElementById("rule-textarea");
         ruleTextArea .select();
-        console.log(generatedRule)
         ruleTextArea.setSelectionRange(0, generatedRule.length)
         document.execCommand("copy");
     }

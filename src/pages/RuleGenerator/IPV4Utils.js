@@ -7,4 +7,8 @@ export default class IPV4Utils{
         let freeBits = IPV4Utils.BITS_AMOUNT - ocupiedBits
         return Math.pow(2,freeBits)
     }
+    static IPV4_REGEX=/^(?:[0-9]{1,3}\.){3}[0-9]{1,3}$/
+    static isValidIPV4(string){
+       return IPV4Utils.IPV4_REGEX.test(string)
+    }
 }

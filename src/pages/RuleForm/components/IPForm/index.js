@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 
 import regEx from '../../../../tools/RegEx'
-
+import IPV4Utils from '../../../RuleGenerator/IPV4Utils'
 import './styles.css'
 import '../../../../global.css'
 import IPV4Adress from '../../../RuleGenerator/IPV4Adress';
@@ -17,6 +17,7 @@ function IPForm({title, id, parentCallback}){
     }
 
     const [IPInputValue, setIPInputValue]=useState('')
+    const [inputBorder, setInputBorder]=useState('success')
     const [selectedRange, setSelectedRange]=useState(IPV4Ranges()[8])
     const [validateInput=true, setValidateInput]=useState('')
 
@@ -34,7 +35,7 @@ function IPForm({title, id, parentCallback}){
                     
                     <input
                     id={id}
-                    className='form-control p-3  bg-secondary text-white ip-input border border-success' 
+                    className={'form-control p-3  bg-secondary text-white ip-input border border-'+inputBorder}
                     required
                     value={IPInputValue}
                     placeholder='iptype'
@@ -128,7 +129,15 @@ function IPForm({title, id, parentCallback}){
         setSelectedRange(updatedRange)
     }
     function onFocusLost(event){
-        sendToParent()
+        if(isFormOK()){
+            setInputBorder('success')
+            sendToParent()
+        }else{
+            setInputBorder('danger')
+        }
+    }
+    function isFormOK(){
+        return IPV4Utils.isValidIPV4(IPInputValue)
     }
 }
 

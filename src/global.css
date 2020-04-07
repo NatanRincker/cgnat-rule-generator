@@ -34,3 +34,7 @@ select{
 .space-between{
     justify-content: space-between;
 }
+
+.border-succes{
+    border-color: red;
+  }
