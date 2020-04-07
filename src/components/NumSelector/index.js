@@ -17,7 +17,7 @@ function NumSelector({id, parentCallback}){
                         type="button"
                         onClick={decrement}
                         onBlur={onFocusLost}
-                    >-</button>
+                    ><b>-</b></button>
                 </div>
                 <input
                     id={id}
@@ -34,7 +34,7 @@ function NumSelector({id, parentCallback}){
                         type="button"
                         onClick={increment}
                         onBlur={onFocusLost}
-                    >+</button>
+                    ><b>+</b></button>
                 </div>
         </div>
     )
