@@ -1,12 +1,13 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import Modal from 'react-bootstrap/Modal'
 import './styles.css'
 import '../../global.css'
+
 import IpForm from './components/IPForm'
 import CustomCheckBox from './components/CustomCheckBox'
+import NumSelector from '../../components/NumSelector/index'
 
 import CGNATRule from './../RuleGenerator/CGNATRule'
-import IPV4Utils from '../RuleGenerator/IPV4Utils';
 
 function RuleForm() {
     const DESTINATION_OPTIONS=[
@@ -14,17 +15,10 @@ function RuleForm() {
         {label:'1 to 16', iPAmount:16},
         {label:'1 to 32', iPAmount:32},
     ]
-    let numeration=()=>{
-        let num=[]
-        for(let i=1;i<=50;i++){
-            num.push(i);
-        }
-        return num
-    }
     const [privateIP, setPrivateIP]=useState()
     const [publicIP, setPublicIP]=useState()
     const [destination, setDestination]=useState(DESTINATION_OPTIONS[0].label)
-    const [ruleNumber, setRuleNumber]=useState(numeration()[0])
+    const [ruleNumber, setRuleNumber]=useState(1)
     const [addresList, setAddresList]=useState('')
     const [disableAddresListInput, setDisableAddresListInput]=useState('disabled')
     const [showModal, setShowModal] = useState(false)
@@ -58,15 +52,7 @@ function RuleForm() {
                             </div>
                             <label htmlFor="enum-select" className="text-white col-sm-2 col-form-label col-form-label-sm center-label">Nº</label>    
                             <div className='input-block'>
-                            <select 
-                            id='enum-select' 
-                            value={ruleNumber}
-                            onChange={event => setRuleNumber(event.target.value)}
-                            className="local-select form-control bg-secondary text-white border border-success">
-                                    {numeration().map(num =>(
-                                        <option key={num} value={num}>{num}</option>
-                                    ))}
-                            </select>   
+                                <NumSelector id='enum-setter' parentCallback={callBackNumeration}/>
                             </div>
                         </div>
 
@@ -155,9 +141,13 @@ function RuleForm() {
     function callbackPrivateIPFromIPForm(IP){
         setPrivateIP(IP)
     }
-    function callbackPublicIPFromIPForm (IP){
+    function callbackPublicIPFromIPForm(IP){
         setPublicIP(IP)
     }
+    function callBackNumeration(num){
+        setRuleNumber(num)
+    }
+
     async function generateRule(){
         if(isFormFilled()){
             let cgnatRule = new CGNATRule(

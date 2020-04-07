@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 
 import regEx from '../../../../tools/RegEx'
 import IPV4Utils from '../../../RuleGenerator/IPV4Utils'
@@ -28,35 +28,34 @@ function IPForm({title, id, parentCallback}){
         }
     }
     return(
-
-            <div className='input-group ip-form'>
-                <label htmlFor={id} className="text-white col-sm-2 col-form-label col-form-label-sm">{title}</label>    
-                <div className='input-block'>
-                    
-                    <input
-                    id={id}
-                    className={'form-control p-3  bg-secondary text-white ip-input border border-'+inputBorder}
-                    required
-                    value={IPInputValue}
-                    placeholder='iptype'
-                    onChange={handleIPInputChange}
-                    onKeyDown={handleKeyDown}
-                    onBlur={onFocusLost}
-                    />
-                </div>
-                <div className="input-group-prepend blend-left">
-                    <div className="input-group-text bg-dark text-white border border-success">/</div>
-                </div>
-                <select 
-                value={selectedRange} 
-                className="range-select blend-right bg-secondary text-white border border-success"
-                onChange={handleRangeChange}
-                onBlur={onFocusLost}>
-                    {IPV4Ranges().map(range =>(
-                        <option key={id+range} value={range}>{range}</option>
-                    ))}   
-                </select>
+        <div className='input-group ip-form'>
+            <label htmlFor={id} className="text-white col-sm-2 col-form-label col-form-label-sm">{title}</label>    
+            <div className='input-block'>
+                
+                <input
+                id={id}
+                className={'form-control p-3  bg-secondary text-white ip-input border border-'+inputBorder}
+                required
+                value={IPInputValue}
+                placeholder='iptype'
+                onChange={handleIPInputChange}
+                onKeyDown={handleKeyDown}
+                onBlur={onFocusLost}
+                />
             </div>
+            <div className="input-group-prepend blend-left">
+                <div className="input-group-text bg-dark text-white border border-success">/</div>
+            </div>
+            <select 
+            value={selectedRange} 
+            className="range-select blend-right bg-secondary text-white border border-success"
+            onChange={handleRangeChange}
+            onBlur={onFocusLost}>
+                {IPV4Ranges().map(range =>(
+                    <option key={id+range} value={range}>{range}</option>
+                ))}   
+            </select>
+        </div>
     )
 
     function handleKeyDown(event){
