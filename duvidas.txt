@@ -1,4 +1,0 @@
-1 - Quando o usuário inserir um IP privado aonde juntamente com o range selecionado, o IP privado final acabar estando em outro range, o programa deve:
-    - Limitar os ranges disponíveis para a escolha, considerando o maior range disponível (é possível que tenha disperdício de IP);
-    - Considerar o IP anterior mais próxomo, de forma à aproveitar o range por inteiro;
-    

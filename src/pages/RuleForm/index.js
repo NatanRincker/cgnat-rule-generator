@@ -14,6 +14,10 @@ function RuleForm() {
         {label:'1 to 8', iPAmount:8},
         {label:'1 to 16', iPAmount:16},
         {label:'1 to 32', iPAmount:32},
+        {label:'1 to 64', iPAmount:64},
+        {label:'1 to 128', iPAmount:128},
+        {label:'1 to 256', iPAmount:256},
+        {label:'1 to 512', iPAmount:512},
     ]
     const [privateIP, setPrivateIP]=useState()
     const [publicIP, setPublicIP]=useState()
